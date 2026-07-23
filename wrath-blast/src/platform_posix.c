@@ -34,6 +34,8 @@ static int read_byte(unsigned char *value)
 
 int platform_init(void)
 {
+	setvbuf(stdout, NULL, _IOFBF, 4096);
+
     if (!isatty(STDIN_FILENO) || !isatty(STDOUT_FILENO)) {
         fprintf(stderr, "Wrath Blast requires an interactive terminal.\n");
         return -1;
@@ -73,6 +75,11 @@ void platform_shutdown(void)
 void platform_clear_screen(void)
 {
     fputs("\x1b[2J\x1b[H", stdout);
+}
+
+void platform_clear_line(void)
+{
+    fputs("\x1b[2K\r", stdout);
 }
 
 void platform_move_cursor(int x, int y)

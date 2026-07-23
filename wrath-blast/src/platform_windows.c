@@ -21,6 +21,8 @@ int platform_init(void)
 {
     DWORD input_mode;
     DWORD output_mode;
+    
+    setvbuf(stdout, NULL, _IOFBF, 4096);
 
     input_handle = GetStdHandle(STD_INPUT_HANDLE);
     output_handle = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -89,6 +91,11 @@ void platform_shutdown(void)
 void platform_clear_screen(void)
 {
     fputs("\x1b[2J\x1b[H", stdout);
+}
+
+void platform_clear_line(void)
+{
+    fputs("\x1b[2K\r", stdout);
 }
 
 void platform_move_cursor(int x, int y)

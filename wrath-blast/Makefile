@@ -9,7 +9,8 @@ COMMON_FLAGS   := -std=c11 -Wall -Wextra -Wpedantic
 
 RELEASE_FLAGS  := $(COMMON_FLAGS) -O2 -DNDEBUG
 DEBUG_FLAGS    := $(COMMON_FLAGS) -O0 -g3
-WINDOWS_FLAGS  := $(COMMON_FLAGS) -O2 -DNDEBUG
+WINDOWS_FLAGS  := $(COMMON_FLAGS) -Os -DNDEBUG \
+                  -ffunction-sections -fdata-sections
 
 FLOPPY_SIZE    := 1474560
 
@@ -38,7 +39,6 @@ release: $(TARGET)
 
 debug: $(DEBUG_TARGET)
 
-
 $(TARGET): $(RELEASE_OBJ) | build
 	$(CC) $(RELEASE_FLAGS) $(RELEASE_OBJ) -o $@
 
@@ -46,7 +46,9 @@ $(DEBUG_TARGET): $(DEBUG_OBJ) | build
 	$(CC) $(DEBUG_FLAGS) $(DEBUG_OBJ) -o $@
 
 $(WINDOWS_TARGET): $(WINDOWS_OBJ) | build
-	$(WINDOWS_CC) $(WINDOWS_FLAGS) $(WINDOWS_OBJ) -o $@
+	$(WINDOWS_CC) $(WINDOWS_FLAGS) \
+	    -Wl,--gc-sections -s \
+	    $(WINDOWS_OBJ) -o $@
 
 $(RELEASE_DIR)/%.o: src/%.c
 	@mkdir -p $(dir $@)

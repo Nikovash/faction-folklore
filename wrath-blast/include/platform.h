@@ -46,6 +46,11 @@ void platform_shutdown(void);
 void platform_clear_screen(void);
 
 /*
+ * Clear the current terminal line and return the cursor to column zero.
+ */
+void platform_clear_line(void);
+
+/*
  * Move the terminal cursor to the given zero-based coordinates.
  */
 void platform_move_cursor(int x, int y);

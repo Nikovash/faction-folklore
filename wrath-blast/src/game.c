@@ -217,7 +217,7 @@ void game_render(const Game *game)
         return;
     }
 
-    platform_clear_screen();
+    platform_move_cursor(0, 0);
 
     puts("WRATH BLAST");
 
@@ -243,11 +243,20 @@ void game_render(const Game *game)
 
     putchar('\n');
 
+    platform_clear_line();
+
     if (game->mode == GAME_MODE_CONFIRM_QUIT) {
         puts("ABANDON THIS RUN?");
-        puts("Q or Enter: confirm    Escape: cancel");
     } else {
         puts("/: doorway    Movement: WASD or arrows    Quit: Q");
+    }
+
+    platform_clear_line();
+
+    if (game->mode == GAME_MODE_CONFIRM_QUIT) {
+        puts("Q or Enter: confirm    Escape: cancel");
+    } else {
+        putchar('\n');
     }
 
     platform_flush();
