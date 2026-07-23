@@ -19,7 +19,8 @@ typedef enum {
     FLOOR_NORTH = 0,
     FLOOR_EAST,
     FLOOR_SOUTH,
-    FLOOR_WEST
+    FLOOR_WEST,
+    FLOOR_DIRECTION_COUNT
 } FloorDirection;
 
 typedef struct {
@@ -28,8 +29,8 @@ typedef struct {
     int grid_x;
     int grid_y;
 
-    int neighbors[4];
-
+    int neighbors[FLOOR_DIRECTION_COUNT];
+    
     bool is_start;
     bool visited;
 } FloorTile;
