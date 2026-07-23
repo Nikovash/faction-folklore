@@ -5,6 +5,10 @@
 #include <stdio.h>
 #include <windows.h>
 
+#ifndef ENABLE_VIRTUAL_TERMINAL_PROCESSING
+#define ENABLE_VIRTUAL_TERMINAL_PROCESSING 0x0004
+#endif
+
 static HANDLE input_handle;
 static HANDLE output_handle;
 

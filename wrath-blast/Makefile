@@ -5,7 +5,7 @@ CC             := cc
 WINDOWS_CC     := x86_64-w64-mingw32-gcc
 
 CPPFLAGS       := -Iinclude
-COMMON_FLAGS   := -std=c17 -Wall -Wextra -Wpedantic
+COMMON_FLAGS   := -std=c11 -Wall -Wextra -Wpedantic
 
 RELEASE_FLAGS  := $(COMMON_FLAGS) -O2 -DNDEBUG
 DEBUG_FLAGS    := $(COMMON_FLAGS) -O0 -g3
