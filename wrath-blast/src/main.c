@@ -1,8 +1,10 @@
 #include "game.h"
 #include "platform.h"
 
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 static void restore_terminal_at_exit(void)
 {
@@ -12,6 +14,7 @@ static void restore_terminal_at_exit(void)
 int main(void)
 {
     Game game;
+    uint32_t seed;
 
     if (platform_init() != 0) {
         return EXIT_FAILURE;
@@ -23,7 +26,12 @@ int main(void)
         return EXIT_FAILURE;
     }
 
-    game_init(&game);
+    seed = (uint32_t)time(NULL);
+
+    if (!game_init(&game, seed)) {
+        fprintf(stderr, "Failed to generate floor.\n");
+        return EXIT_FAILURE;
+    }
 
     while (game.running) {
         PlatformKey key;
