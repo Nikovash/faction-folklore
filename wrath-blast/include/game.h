@@ -12,6 +12,11 @@ typedef struct {
     int y;
 } GamePosition;
 
+typedef enum {
+    GAME_MODE_PLAYING = 0,
+    GAME_MODE_CONFIRM_QUIT
+} GameMode;
+
 typedef struct {
     Floor floor;
     GamePosition player;
@@ -19,6 +24,7 @@ typedef struct {
     int rank;
 
     bool running;
+    GameMode mode;
 } Game;
 
 bool game_init(Game *game, uint32_t seed);

@@ -118,6 +118,7 @@ bool game_init(Game *game, uint32_t seed)
 
     game->rank = 1;
     game->running = true;
+    game->mode = GAME_MODE_PLAYING;
 
     if (!floor_generate(&game->floor, seed)) {
         game->running = false;
@@ -136,6 +137,38 @@ void game_handle_input(Game *game, PlatformKey key)
         return;
     }
 
+    /*
+     * Quit confirmation blocks normal movement and actions.
+     */
+    if (game->mode == GAME_MODE_CONFIRM_QUIT) {
+        switch (key) {
+            case KEY_QUIT:
+            case KEY_INTERACT:
+                game->running = false;
+                break;
+
+            case KEY_ESCAPE:
+                game->mode = GAME_MODE_PLAYING;
+                break;
+
+            case KEY_NONE:
+            case KEY_UP:
+            case KEY_DOWN:
+            case KEY_LEFT:
+            case KEY_RIGHT:
+            case KEY_INVENTORY:
+            case KEY_CHARACTER:
+            case KEY_UNKNOWN:
+            default:
+                break;
+        }
+
+        return;
+    }
+
+    /*
+     * Normal gameplay input.
+     */
     switch (key) {
         case KEY_UP:
             try_move_player(game, 0, -1);
@@ -155,7 +188,7 @@ void game_handle_input(Game *game, PlatformKey key)
 
         case KEY_QUIT:
         case KEY_ESCAPE:
-            game->running = false;
+            game->mode = GAME_MODE_CONFIRM_QUIT;
             break;
 
         case KEY_NONE:
@@ -184,7 +217,7 @@ void game_render(const Game *game)
         return;
     }
 
-    platform_move_cursor(0, 0);
+    platform_clear_screen();
 
     puts("WRATH BLAST");
 
@@ -209,7 +242,13 @@ void game_render(const Game *game)
     }
 
     putchar('\n');
-    puts("/: doorway    Move: WASD or arrows    Quit: Q");
+
+    if (game->mode == GAME_MODE_CONFIRM_QUIT) {
+        puts("ABANDON THIS RUN?");
+        puts("Q or Enter: confirm    Escape: cancel");
+    } else {
+        puts("/: doorway    Movement: WASD or arrows    Quit: Q");
+    }
 
     platform_flush();
 }
