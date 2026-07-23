@@ -1,3 +1,5 @@
+#ifndef _WIN32
+
 #include "platform.h"
 
 #include <errno.h>
@@ -195,7 +197,9 @@ PlatformKey platform_read_key(void)
         if (apply_game_terminal_mode(0) != 0) {
             return KEY_UNKNOWN;
         }
-        
+
         return result;
     }
 }
+
+#endif
