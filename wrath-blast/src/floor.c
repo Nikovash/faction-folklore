@@ -81,6 +81,9 @@ static void direction_offset(
         case FLOOR_WEST:
             *delta_x = -1;
             break;
+
+        case FLOOR_DIRECTION_COUNT:
+            break;
     }
 }
 
