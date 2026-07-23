@@ -220,6 +220,8 @@ void game_render(const Game *game)
     platform_move_cursor(0, 0);
 
     puts("WRATH BLAST");
+    
+    platform_clear_line();
 
     printf(
         "Rank %d | Tile %d of %d\n\n",
